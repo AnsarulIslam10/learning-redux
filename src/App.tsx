@@ -1,10 +1,13 @@
-import { Button } from "./components/ui/button";
+import { Outlet } from "react-router";
+import Navbar from "./components/ui/layout/Navbar";
 
 function App() {
-  return <div>
-    <h1 className="text-5xl">Besic todo app</h1>
-    <Button>Test</Button>
-  </div>;
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
 }
 
 export default App;
