@@ -1,6 +1,7 @@
 import type { RootState } from "@/redux/store";
 import type { ITask } from "@/types";
 import { createSlice, nanoid, type PayloadAction } from "@reduxjs/toolkit";
+import { removeUser } from "../user/userSlice";
 interface IinitialState {
     tasks: ITask[];
     filter: "all" | "high" | "medium" | "low"
@@ -14,32 +15,18 @@ const initialState: IinitialState = {
             dueDate: "2025-11",
             isCompleted: false,
             priority: "high",
+            assignedTo: null,
         },
-        {
-            id: 'asdasdfsdasdfsa',
-            title: "Initialize backden",
-            description: "Create api routes",
-            dueDate: "2025-11",
-            isCompleted: false,
-            priority: "medium",
-        },
-        {
-            id: 'asdasdfsdfdfsafd',
-            title: "Initialize FullStack",
-            description: "Do everything",
-            dueDate: "2025-11",
-            isCompleted: false,
-            priority: "low",
-        },
+
 
     ],
     filter: "all"
 }
 
-type DraftTask = Pick<ITask, 'title' | "description" | "dueDate" | "priority">;
+type DraftTask = Pick<ITask, 'title' | "description" | "dueDate" | "priority" | "assignedTo">;
 
 const createTask = (taskData: DraftTask): ITask => {
-    return { id: nanoid(), isCompleted: false, ...taskData }
+    return { ...taskData, id: nanoid(), isCompleted: false, assignedTo: taskData.assignedTo ? taskData.assignedTo : null }
 }
 
 
@@ -61,6 +48,11 @@ const taskSlice = createSlice({
         updateFilter: (state, action: PayloadAction<"all" | "high" | "medium" | "low">) => {
             state.filter = action.payload
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(removeUser, (state, action)=> {
+            state.tasks.forEach(task => task.assignedTo === action.payload ? (task.assignedTo = null) : task)
+        })
     }
 })
 

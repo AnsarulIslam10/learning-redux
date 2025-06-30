@@ -33,7 +33,7 @@ export default function TaskCard({task}: IProps) {
           <Checkbox checked={task.isCompleted} onClick={()=> dispatch(toggleCompleteState(task.id))} className="cursor-pointer" />
         </div>
       </div>
-      <p>Assigned To {assignedUser ? assignedUser.name : "guest"}</p>
+      <p>Assigned To {assignedUser ? assignedUser.name : null}</p>
       <p className="mt-5">{task.description}</p>
     </div>
   );
